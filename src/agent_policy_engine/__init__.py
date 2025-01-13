@@ -16,3 +16,5 @@ __all__ = [
     "ToolCall",
     "load_policy",
 ]
+
+__version__ = "0.1.0"
