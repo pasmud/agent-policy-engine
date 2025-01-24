@@ -22,3 +22,15 @@ class AuditRecord:
 
     def to_dict(self) -> dict[str, Any]:
         return {"timestamp": self.timestamp, "decision": self.decision}
+
+
+@dataclass
+class AuditLog:
+    """In-memory audit log with optional JSON serialization."""
+
+    records: list[AuditRecord] = field(default_factory=list)
+
+    def append(self, decision: Decision, timestamp: str | None = None) -> AuditRecord:
+        record = AuditRecord(timestamp=timestamp or _timestamp(), decision=decision.to_dict())
+        self.records.append(record)
+        return record
