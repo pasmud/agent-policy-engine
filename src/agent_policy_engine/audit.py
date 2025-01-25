@@ -34,3 +34,20 @@ class AuditLog:
         record = AuditRecord(timestamp=timestamp or _timestamp(), decision=decision.to_dict())
         self.records.append(record)
         return record
+
+    def extend(self, decisions: list[Decision], timestamp: str | None = None) -> list[AuditRecord]:
+        ts = timestamp or _timestamp()
+        return [self.append(decision, timestamp=ts) for decision in decisions]
+
+    def to_dicts(self) -> list[dict[str, Any]]:
+        return [record.to_dict() for record in self.records]
+
+    def clear(self) -> None:
+        self.records.clear()
+
+    def write_jsonl(self, path: str | Path) -> None:
+        target = Path(path)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        with target.open("w", encoding="utf-8") as fh:
+            for record in self.records:
+                fh.write(json.dumps(record.to_dict(), sort_keys=True) + "\n")
