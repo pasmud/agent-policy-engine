@@ -51,3 +51,20 @@ class AuditLog:
         with target.open("w", encoding="utf-8") as fh:
             for record in self.records:
                 fh.write(json.dumps(record.to_dict(), sort_keys=True) + "\n")
+
+    @classmethod
+    def from_jsonl(cls, path: str | Path) -> "AuditLog":
+        target = Path(path)
+        records: list[AuditRecord] = []
+        for line in target.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            payload = json.loads(line)
+            if not isinstance(payload, dict):
+                raise ValueError("audit record must be an object")
+            ts = payload.get("timestamp")
+            decision = payload.get("decision")
+            if not isinstance(ts, str) or not isinstance(decision, dict):
+                raise ValueError("audit record requires string timestamp and object decision")
+            records.append(AuditRecord(timestamp=ts, decision=decision))
+        return cls(records=records)
