@@ -37,3 +37,14 @@ def build_parser() -> argparse.ArgumentParser:
         prog="agent-policy-engine",
         description="Evaluate agent tool calls against allow/deny policies with audit output.",
     )
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    check = sub.add_parser("check", help="Evaluate tool calls against a policy")
+    check.add_argument("--policy", required=True, help="Path to policy JSON file")
+    check.add_argument("--input", required=True, help="Path to tool call JSON file")
+    check.add_argument(
+        "--format",
+        choices=["json", "text"],
+        default="json",
+        help="Output format (default: json)",
+    )
