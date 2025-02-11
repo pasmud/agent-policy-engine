@@ -48,3 +48,17 @@ def build_parser() -> argparse.ArgumentParser:
         default="json",
         help="Output format (default: json)",
     )
+    check.add_argument("--audit-out", help="Write audit records as JSONL to this path")
+    check.add_argument(
+        "--fail-on-deny",
+        action="store_true",
+        help="Exit with code 2 if any call is denied",
+    )
+
+    return parser
+
+
+def cmd_check(args: argparse.Namespace) -> int:
+    policy = load_policy(args.policy)
+    calls = _load_calls(args.input)
+    audit_log = AuditLog()
