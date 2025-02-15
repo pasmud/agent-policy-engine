@@ -62,3 +62,15 @@ def cmd_check(args: argparse.Namespace) -> int:
     policy = load_policy(args.policy)
     calls = _load_calls(args.input)
     audit_log = AuditLog()
+    engine = PolicyEngine(policy, audit_log=audit_log)
+    decisions = engine.check_many(calls)
+    report = decisions_to_report(decisions)
+    report["policy"] = {
+        "version": policy.version,
+        "default_effect": policy.default_effect,
+        "rules": len(policy.rules),
+        "path": str(Path(args.policy)),
+    }
+    if args.audit_out:
+        audit_log.write_jsonl(args.audit_out)
+        report["audit_out"] = str(Path(args.audit_out))
