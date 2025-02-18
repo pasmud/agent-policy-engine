@@ -74,3 +74,20 @@ def cmd_check(args: argparse.Namespace) -> int:
     if args.audit_out:
         audit_log.write_jsonl(args.audit_out)
         report["audit_out"] = str(Path(args.audit_out))
+    sys.stdout.write(render_report(report, args.format) + "\n")
+    if args.fail_on_deny and report["summary"]["denied"] > 0:
+        return 2
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    try:
+        if args.command == "check":
+            return cmd_check(args)
+        parser.error(f"unknown command: {args.command}")
+        return 2  # pragma: no cover
+    except (PolicyLoadError, ValueError, OSError, json.JSONDecodeError) as exc:
+        sys.stderr.write(f"error: {exc}\n")
+        return 1
