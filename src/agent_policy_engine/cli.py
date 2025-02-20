@@ -91,3 +91,7 @@ def main(argv: list[str] | None = None) -> int:
     except (PolicyLoadError, ValueError, OSError, json.JSONDecodeError) as exc:
         sys.stderr.write(f"error: {exc}\n")
         return 1
+
+
+if __name__ == "__main__":  # pragma: no cover
+    raise SystemExit(main())
