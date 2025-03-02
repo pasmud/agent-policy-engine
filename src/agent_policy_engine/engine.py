@@ -14,3 +14,11 @@ from .models import Decision, Policy, Rule, ToolCall
 class EvaluationResult:
     decision: Decision
     record: dict
+
+
+class PolicyEngine:
+    """Evaluate tool calls against a policy and record audit events."""
+
+    def __init__(self, policy: Policy, audit_log: AuditLog | None = None) -> None:
+        self.policy = policy
+        self.audit_log = audit_log or AuditLog()
