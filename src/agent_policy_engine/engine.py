@@ -60,3 +60,6 @@ class PolicyEngine:
 
     def evaluate_many(self, calls: Iterable[ToolCall]) -> list[Decision]:
         return [self.evaluate(call) for call in calls]
+
+    def check_many(self, calls: Iterable[ToolCall]) -> list[Decision]:
+        return [self.check(call) for call in calls]
