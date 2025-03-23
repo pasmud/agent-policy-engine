@@ -19,3 +19,4 @@ def _matches_any(patterns: tuple[str, ...], value: str) -> bool:
 
 def _get_path(data: dict[str, Any], path: str) -> Any:
     """Resolve a dotted path, supporting dict keys and integer list indexes."""
+    current: Any = data
