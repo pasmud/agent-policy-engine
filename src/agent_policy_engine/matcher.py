@@ -35,3 +35,7 @@ def _get_path(data: dict[str, Any], path: str) -> Any:
         else:
             return _MISSING
     return current
+
+
+class _MissingSentinel:
+    pass
