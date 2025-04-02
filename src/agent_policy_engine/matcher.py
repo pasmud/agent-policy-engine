@@ -118,3 +118,4 @@ def _condition_matches(actual: Any, expected: Any) -> bool:
             else:
                 return False
         return True
+    return actual == expected
