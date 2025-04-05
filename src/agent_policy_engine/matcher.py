@@ -119,3 +119,9 @@ def _condition_matches(actual: Any, expected: Any) -> bool:
                 return False
         return True
     return actual == expected
+
+
+def rule_matches(rule: Rule, call: ToolCall) -> bool:
+    """Return True when the rule applies to the given tool call."""
+    if not _matches_any(rule.tools, call.tool):
+        return False
