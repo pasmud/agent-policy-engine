@@ -127,3 +127,27 @@ def rule_matches(rule: Rule, call: ToolCall) -> bool:
         return False
     if not _matches_any(rule.agents, call.agent):
         return False
+    if not _matches_any(rule.actions, call.action):
+        return False
+
+    for path, expected in rule.when.items():
+        if not isinstance(path, str) or not path:
+            return False
+        if path == "tool":
+            actual = call.tool
+        elif path == "agent":
+            actual = call.agent
+        elif path == "action":
+            actual = call.action
+        elif path.startswith("arguments."):
+            actual = _get_path(call.arguments, path[len("arguments."):])
+        elif path.startswith("context."):
+            actual = _get_path(call.context, path[len("context."):])
+        else:
+            actual = _get_path({"arguments": call.arguments, "context": call.context}, path)
+
+        exists_check = isinstance(expected, dict) and "exists" in expected
+        if actual is _MISSING and not exists_check:
+            return False
+        if not _condition_matches(actual, expected):
+            return False
