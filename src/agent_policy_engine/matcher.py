@@ -151,3 +151,5 @@ def rule_matches(rule: Rule, call: ToolCall) -> bool:
             return False
         if not _condition_matches(actual, expected):
             return False
+
+    return True
