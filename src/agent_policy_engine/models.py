@@ -9,3 +9,15 @@ from typing import Any
 
 def utc_now_iso() -> str:
     """Return a deterministic-friendly UTC timestamp helper for runtime use."""
+    return datetime.now(timezone.utc).isoformat()
+
+
+def _normalize_str_list(value: Any, field_name: str) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, str):
+        items = [value]
+    elif isinstance(value, list):
+        items = value
+    else:
+        raise ValueError(f"{field_name} must be a string or list of strings")
