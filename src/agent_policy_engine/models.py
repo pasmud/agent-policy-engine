@@ -26,3 +26,9 @@ def _normalize_str_list(value: Any, field_name: str) -> tuple[str, ...]:
         if not isinstance(item, str) or not item.strip():
             raise ValueError(f"{field_name} entries must be non-empty strings")
         normalized.append(item.strip())
+    return tuple(normalized)
+
+
+@dataclass(frozen=True)
+class ToolCall:
+    """A tool invocation request made by an agent."""
