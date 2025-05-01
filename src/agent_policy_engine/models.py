@@ -32,3 +32,7 @@ def _normalize_str_list(value: Any, field_name: str) -> tuple[str, ...]:
 @dataclass(frozen=True)
 class ToolCall:
     """A tool invocation request made by an agent."""
+
+    tool: str
+    agent: str = "default"
+    action: str = "call"
