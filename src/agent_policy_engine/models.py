@@ -36,3 +36,6 @@ class ToolCall:
     tool: str
     agent: str = "default"
     action: str = "call"
+    arguments: dict[str, Any] = field(default_factory=dict)
+    context: dict[str, Any] = field(default_factory=dict)
+    call_id: str = ""
