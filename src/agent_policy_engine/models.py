@@ -80,3 +80,10 @@ class ToolCall:
             "context": dict(self.context),
             "call_id": self.call_id,
         }
+
+
+@dataclass(frozen=True)
+class Rule:
+    """A single allow/deny rule."""
+
+    name: str
