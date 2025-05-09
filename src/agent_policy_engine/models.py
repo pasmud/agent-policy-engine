@@ -87,3 +87,6 @@ class Rule:
     """A single allow/deny rule."""
 
     name: str
+    effect: str
+    tools: tuple[str, ...] = ("*",)
+    agents: tuple[str, ...] = ("*",)
