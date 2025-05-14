@@ -90,3 +90,6 @@ class Rule:
     effect: str
     tools: tuple[str, ...] = ("*",)
     agents: tuple[str, ...] = ("*",)
+    actions: tuple[str, ...] = ("*",)
+    when: dict[str, Any] = field(default_factory=dict)
+    reason: str = ""
