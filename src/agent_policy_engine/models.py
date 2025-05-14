@@ -93,3 +93,39 @@ class Rule:
     actions: tuple[str, ...] = ("*",)
     when: dict[str, Any] = field(default_factory=dict)
     reason: str = ""
+    priority: int = 0
+
+    @classmethod
+    def from_dict(cls, data: Any, index: int) -> "Rule":
+        if not isinstance(data, dict):
+            raise ValueError(f"rule at index {index} must be an object")
+        name = data.get("name")
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError(f"rule at index {index} must have a non-empty 'name'")
+        effect = data.get("effect")
+        if not isinstance(effect, str) or effect.strip().lower() not in {"allow", "deny"}:
+            raise ValueError(
+                f"rule '{name}' must have effect 'allow' or 'deny'"
+            )
+        tools = _normalize_str_list(data.get("tools", ["*"]), f"rule '{name}' tools")
+        agents = _normalize_str_list(data.get("agents", ["*"]), f"rule '{name}' agents")
+        actions = _normalize_str_list(data.get("actions", ["*"]), f"rule '{name}' actions")
+        when = data.get("when", {})
+        if not isinstance(when, dict):
+            raise ValueError(f"rule '{name}' when must be an object")
+        reason = data.get("reason", "")
+        if not isinstance(reason, str):
+            raise ValueError(f"rule '{name}' reason must be a string")
+        priority = data.get("priority", 0)
+        if not isinstance(priority, int) or isinstance(priority, bool):
+            raise ValueError(f"rule '{name}' priority must be an integer")
+        return cls(
+            name=name.strip(),
+            effect=effect.strip().lower(),
+            tools=tools or ("*",),
+            agents=agents or ("*",),
+            actions=actions or ("*",),
+            when=dict(when),
+            reason=reason.strip(),
+            priority=priority,
+        )
