@@ -129,3 +129,23 @@ class Rule:
             reason=reason.strip(),
             priority=priority,
         )
+
+    def to_dict(self) -> dict[str, Any]:
+        data: dict[str, Any] = {
+            "name": self.name,
+            "effect": self.effect,
+            "tools": list(self.tools),
+            "agents": list(self.agents),
+            "actions": list(self.actions),
+            "priority": self.priority,
+        }
+        if self.when:
+            data["when"] = dict(self.when)
+        if self.reason:
+            data["reason"] = self.reason
+        return data
+
+
+@dataclass(frozen=True)
+class Policy:
+    """A policy document containing default effect and ordered rules."""
