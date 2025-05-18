@@ -149,3 +149,7 @@ class Rule:
 @dataclass(frozen=True)
 class Policy:
     """A policy document containing default effect and ordered rules."""
+
+    version: str
+    default_effect: str
+    rules: tuple[Rule, ...]
