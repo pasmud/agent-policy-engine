@@ -153,3 +153,39 @@ class Policy:
     version: str
     default_effect: str
     rules: tuple[Rule, ...]
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    @classmethod
+    def from_dict(cls, data: Any) -> "Policy":
+        if not isinstance(data, dict):
+            raise ValueError("policy must be an object")
+        version = data.get("version", "1")
+        if not isinstance(version, str) or not version.strip():
+            raise ValueError("policy 'version' must be a non-empty string")
+        default_effect = data.get("default_effect", "deny")
+        if not isinstance(default_effect, str) or default_effect.strip().lower() not in {
+            "allow",
+            "deny",
+        }:
+            raise ValueError("policy 'default_effect' must be 'allow' or 'deny'")
+        rules_raw = data.get("rules", [])
+        if not isinstance(rules_raw, list):
+            raise ValueError("policy 'rules' must be a list")
+        rules = tuple(Rule.from_dict(item, index) for index, item in enumerate(rules_raw))
+        metadata = data.get("metadata", {})
+        if not isinstance(metadata, dict):
+            raise ValueError("policy 'metadata' must be an object")
+        return cls(
+            version=version.strip(),
+            default_effect=default_effect.strip().lower(),
+            rules=rules,
+            metadata=dict(metadata),
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "version": self.version,
+            "default_effect": self.default_effect,
+            "rules": [rule.to_dict() for rule in self.rules],
+            "metadata": dict(self.metadata),
+        }
