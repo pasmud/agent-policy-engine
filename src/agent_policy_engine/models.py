@@ -189,3 +189,10 @@ class Policy:
             "rules": [rule.to_dict() for rule in self.rules],
             "metadata": dict(self.metadata),
         }
+
+
+@dataclass(frozen=True)
+class Decision:
+    """The outcome of evaluating a tool call."""
+
+    allowed: bool
