@@ -198,3 +198,6 @@ class Decision:
     allowed: bool
     effect: str
     reason: str
+    matched_rule: str | None
+    matched_rules: tuple[str, ...]
+    call: ToolCall
