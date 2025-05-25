@@ -196,3 +196,5 @@ class Decision:
     """The outcome of evaluating a tool call."""
 
     allowed: bool
+    effect: str
+    reason: str
