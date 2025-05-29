@@ -201,3 +201,13 @@ class Decision:
     matched_rule: str | None
     matched_rules: tuple[str, ...]
     call: ToolCall
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "allowed": self.allowed,
+            "effect": self.effect,
+            "reason": self.reason,
+            "matched_rule": self.matched_rule,
+            "matched_rules": list(self.matched_rules),
+            "call": self.call.to_dict(),
+        }
