@@ -28,3 +28,13 @@ def _load_data(path: Path) -> Any:
         return json.loads(text)
     except json.JSONDecodeError as exc:
         raise PolicyLoadError(f"invalid JSON in policy '{path}': {exc}") from exc
+
+
+def load_policy(path: str | Path) -> Policy:
+    """Load and validate a policy from a JSON (or YAML, if PyYAML installed) file."""
+    policy_path = Path(path)
+    if not policy_path.exists():
+        raise PolicyLoadError(f"policy file not found: {policy_path}")
+    if not policy_path.is_file():
+        raise PolicyLoadError(f"policy path is not a file: {policy_path}")
+    data = _load_data(policy_path)
