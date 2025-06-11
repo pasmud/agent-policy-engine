@@ -38,3 +38,7 @@ def load_policy(path: str | Path) -> Policy:
     if not policy_path.is_file():
         raise PolicyLoadError(f"policy path is not a file: {policy_path}")
     data = _load_data(policy_path)
+    try:
+        return Policy.from_dict(data)
+    except ValueError as exc:
+        raise PolicyLoadError(str(exc)) from exc
