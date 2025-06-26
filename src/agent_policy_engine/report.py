@@ -40,3 +40,4 @@ def render_report(report: dict[str, Any], fmt: str) -> str:
                 f"{idx}. {effect.upper():5} tool={tool} agent={agent} rule={matched} reason={reason}"
             )
         return "\n".join(lines)
+    raise ValueError(f"unsupported format: {fmt}")
