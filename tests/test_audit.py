@@ -18,3 +18,27 @@ class TestAuditLog(unittest.TestCase):
             matched_rules=("rule1",) if allowed else (),
             call=call,
         )
+
+    def test_append_and_to_dicts(self):
+        log = AuditLog()
+        rec = log.append(self._decision(True), timestamp="2025-01-01T00:00:00+00:00")
+        self.assertEqual(rec.timestamp, "2025-01-01T00:00:00+00:00")
+        self.assertEqual(len(log.to_dicts()), 1)
+        self.assertTrue(log.to_dicts()[0]["decision"]["allowed"])
+
+    def test_write_and_read_jsonl(self):
+        log = AuditLog()
+        log.append(self._decision(True), timestamp="2025-01-01T00:00:00+00:00")
+        log.append(self._decision(False), timestamp="2025-01-01T00:00:01+00:00")
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "audit.jsonl"
+            log.write_jsonl(path)
+            loaded = AuditLog.from_jsonl(path)
+            self.assertEqual(len(loaded.records), 2)
+            self.assertFalse(loaded.records[1].decision["allowed"])
+
+    def test_clear(self):
+        log = AuditLog()
+        log.append(self._decision())
+        log.clear()
+        self.assertEqual(log.records, [])
