@@ -42,3 +42,7 @@ class TestAuditLog(unittest.TestCase):
         log.append(self._decision())
         log.clear()
         self.assertEqual(log.records, [])
+
+
+if __name__ == "__main__":
+    unittest.main()
