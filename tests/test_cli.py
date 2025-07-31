@@ -23,3 +23,27 @@ def run_cli(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess[
         text=True,
         check=False,
     )
+
+
+class TestCLI(unittest.TestCase):
+    def test_help(self):
+        result = run_cli("--help")
+        self.assertEqual(result.returncode, 0)
+        self.assertIn("agent-policy-engine", result.stdout)
+        self.assertIn("check", result.stdout)
+
+    def test_check_json_report(self):
+        result = run_cli(
+            "check",
+            "--policy",
+            "examples/policy.json",
+            "--input",
+            "examples/calls.json",
+            "--format",
+            "json",
+        )
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        report = json.loads(result.stdout)
+        self.assertEqual(report["summary"]["total"], 4)
+        self.assertEqual(report["summary"]["allowed"], 2)
+        self.assertEqual(report["summary"]["denied"], 2)
