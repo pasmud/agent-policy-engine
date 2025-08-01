@@ -47,3 +47,31 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(report["summary"]["total"], 4)
         self.assertEqual(report["summary"]["allowed"], 2)
         self.assertEqual(report["summary"]["denied"], 2)
+
+    def test_check_text_report(self):
+        result = run_cli(
+            "check",
+            "--policy",
+            "examples/policy.json",
+            "--input",
+            "examples/calls.json",
+            "--format",
+            "text",
+        )
+        self.assertEqual(result.returncode, 0, msg=result.stderr)
+        self.assertIn("total=4", result.stdout)
+        self.assertIn("DENY", result.stdout)
+        self.assertIn("ALLOW", result.stdout)
+
+    def test_fail_on_deny(self):
+        result = run_cli(
+            "check",
+            "--policy",
+            "examples/policy.json",
+            "--input",
+            "examples/calls.json",
+            "--fail-on-deny",
+        )
+        self.assertEqual(result.returncode, 2)
+        report = json.loads(result.stdout)
+        self.assertGreater(report["summary"]["denied"], 0)
