@@ -75,3 +75,34 @@ class TestCLI(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         report = json.loads(result.stdout)
         self.assertGreater(report["summary"]["denied"], 0)
+
+    def test_audit_out_written(self):
+        with tempfile.TemporaryDirectory() as td:
+            audit_path = Path(td) / "audit.jsonl"
+            result = run_cli(
+                "check",
+                "--policy",
+                "examples/policy.json",
+                "--input",
+                "examples/calls.json",
+                "--audit-out",
+                str(audit_path),
+            )
+            self.assertEqual(result.returncode, 0, msg=result.stderr)
+            self.assertTrue(audit_path.exists())
+            lines = [line for line in audit_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            self.assertEqual(len(lines), 4)
+            record = json.loads(lines[0])
+            self.assertIn("timestamp", record)
+            self.assertIn("decision", record)
+
+    def test_invalid_policy_returns_error(self):
+        with tempfile.TemporaryDirectory() as td:
+            bad = Path(td) / "bad.json"
+            bad.write_text(
+                json.dumps({"version": "1", "default_effect": "maybe", "rules": []}),
+                encoding="utf-8",
+            )
+            result = run_cli("check", "--policy", str(bad), "--input", "examples/calls.json")
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("error:", result.stderr)
