@@ -106,3 +106,7 @@ class TestCLI(unittest.TestCase):
             result = run_cli("check", "--policy", str(bad), "--input", "examples/calls.json")
             self.assertEqual(result.returncode, 1)
             self.assertIn("error:", result.stderr)
+
+
+if __name__ == "__main__":
+    unittest.main()
