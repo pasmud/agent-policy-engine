@@ -41,3 +41,13 @@ class TestPolicyEngine(unittest.TestCase):
         self.assertFalse(decision.allowed)
         self.assertEqual(decision.effect, "deny")
         self.assertIsNone(decision.matched_rule)
+
+    def test_allow_rule(self):
+        decision = self.engine.evaluate(ToolCall.from_dict({"tool": "web.search"}))
+        self.assertTrue(decision.allowed)
+        self.assertEqual(decision.matched_rule, "allow-read")
+
+    def test_priority_overrides(self):
+        decision = self.engine.evaluate(ToolCall.from_dict({"tool": "shell.exec", "agent": "admin"}))
+        self.assertTrue(decision.allowed)
+        self.assertEqual(decision.matched_rule, "allow-shell-for-admin")
