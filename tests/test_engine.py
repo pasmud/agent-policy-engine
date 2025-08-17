@@ -51,3 +51,8 @@ class TestPolicyEngine(unittest.TestCase):
         decision = self.engine.evaluate(ToolCall.from_dict({"tool": "shell.exec", "agent": "admin"}))
         self.assertTrue(decision.allowed)
         self.assertEqual(decision.matched_rule, "allow-shell-for-admin")
+
+    def test_deny_reason(self):
+        decision = self.engine.evaluate(ToolCall.from_dict({"tool": "shell.exec", "agent": "dev"}))
+        self.assertFalse(decision.allowed)
+        self.assertEqual(decision.reason, "Shell is blocked")
