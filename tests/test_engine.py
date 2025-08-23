@@ -56,3 +56,21 @@ class TestPolicyEngine(unittest.TestCase):
         decision = self.engine.evaluate(ToolCall.from_dict({"tool": "shell.exec", "agent": "dev"}))
         self.assertFalse(decision.allowed)
         self.assertEqual(decision.reason, "Shell is blocked")
+
+    def test_check_appends_audit(self):
+        self.assertEqual(len(self.engine.audit_log.records), 0)
+        self.engine.check(ToolCall.from_dict({"tool": "fs.read"}))
+        self.engine.check(ToolCall.from_dict({"tool": "shell.exec"}))
+        self.assertEqual(len(self.engine.audit_log.records), 2)
+        self.assertTrue(self.engine.audit_log.records[0].decision["allowed"])
+        self.assertFalse(self.engine.audit_log.records[1].decision["allowed"])
+
+    def test_check_many(self):
+        decisions = self.engine.check_many(
+            [
+                ToolCall.from_dict({"tool": "fs.read"}),
+                ToolCall.from_dict({"tool": "shell.exec"}),
+            ]
+        )
+        self.assertEqual(len(decisions), 2)
+        self.assertEqual(len(self.engine.audit_log.records), 2)
