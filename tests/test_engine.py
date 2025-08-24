@@ -74,3 +74,7 @@ class TestPolicyEngine(unittest.TestCase):
         )
         self.assertEqual(len(decisions), 2)
         self.assertEqual(len(self.engine.audit_log.records), 2)
+
+
+if __name__ == "__main__":
+    unittest.main()
