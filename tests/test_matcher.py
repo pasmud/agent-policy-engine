@@ -25,3 +25,31 @@ class TestMatcher(unittest.TestCase):
         self.assertFalse(
             rule_matches(rule, ToolCall.from_dict({"tool": "x", "agent": "ops", "action": "call"}))
         )
+
+    def test_when_eq_and_in(self):
+        rule = Rule.from_dict(
+            {
+                "name": "r",
+                "effect": "allow",
+                "when": {
+                    "arguments.priority": {"in": ["low", "medium"]},
+                    "context.env": {"eq": "dev"},
+                },
+            },
+            0,
+        )
+        ok = ToolCall.from_dict(
+            {"tool": "t", "arguments": {"priority": "low"}, "context": {"env": "dev"}}
+        )
+        bad = ToolCall.from_dict(
+            {"tool": "t", "arguments": {"priority": "high"}, "context": {"env": "dev"}}
+        )
+        self.assertTrue(rule_matches(rule, ok))
+        self.assertFalse(rule_matches(rule, bad))
+
+    def test_when_missing_path_fails(self):
+        rule = Rule.from_dict(
+            {"name": "r", "effect": "deny", "when": {"arguments.secret": {"eq": "x"}}},
+            0,
+        )
+        self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t"})))
