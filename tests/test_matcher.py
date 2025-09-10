@@ -53,3 +53,11 @@ class TestMatcher(unittest.TestCase):
             0,
         )
         self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t"})))
+
+    def test_when_exists(self):
+        rule = Rule.from_dict(
+            {"name": "r", "effect": "deny", "when": {"arguments.cmd": {"exists": True}}},
+            0,
+        )
+        self.assertTrue(rule_matches(rule, ToolCall.from_dict({"tool": "t", "arguments": {"cmd": "ls"}})))
+        self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t", "arguments": {}})))
