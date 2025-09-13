@@ -61,3 +61,20 @@ class TestMatcher(unittest.TestCase):
         )
         self.assertTrue(rule_matches(rule, ToolCall.from_dict({"tool": "t", "arguments": {"cmd": "ls"}})))
         self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t", "arguments": {}})))
+
+    def test_regex_and_contains(self):
+        rule = Rule.from_dict(
+            {
+                "name": "r",
+                "effect": "deny",
+                "when": {
+                    "arguments.cmd": {"regex": "rm\\s+-rf"},
+                    "arguments.flags": {"contains": "--force"},
+                },
+            },
+            0,
+        )
+        call = ToolCall.from_dict(
+            {"tool": "shell", "arguments": {"cmd": "rm -rf /tmp/x", "flags": ["-v", "--force"]}}
+        )
+        self.assertTrue(rule_matches(rule, call))
