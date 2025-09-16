@@ -93,3 +93,7 @@ class TestMatcher(unittest.TestCase):
         )
         self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t"})))
         self.assertTrue(rule_matches(rule, call))
+
+
+if __name__ == "__main__":
+    unittest.main()
