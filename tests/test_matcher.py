@@ -78,3 +78,18 @@ class TestMatcher(unittest.TestCase):
             {"tool": "shell", "arguments": {"cmd": "rm -rf /tmp/x", "flags": ["-v", "--force"]}}
         )
         self.assertTrue(rule_matches(rule, call))
+
+    def test_nested_path(self):
+        rule = Rule.from_dict(
+            {
+                "name": "r",
+                "effect": "allow",
+                "when": {"arguments.request.meta.region": {"eq": "us-east-1"}},
+            },
+            0,
+        )
+        call = ToolCall.from_dict(
+            {"tool": "t", "arguments": {"request": {"meta": {"region": "us-east-1"}}}}
+        )
+        self.assertFalse(rule_matches(rule, ToolCall.from_dict({"tool": "t"})))
+        self.assertTrue(rule_matches(rule, call))
