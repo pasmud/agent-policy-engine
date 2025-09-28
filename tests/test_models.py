@@ -31,3 +31,7 @@ class TestToolCall(unittest.TestCase):
     def test_from_dict_rejects_missing_tool(self):
         with self.assertRaises(ValueError):
             ToolCall.from_dict({"agent": "a"})
+
+    def test_from_dict_rejects_bad_arguments(self):
+        with self.assertRaises(ValueError):
+            ToolCall.from_dict({"tool": "x", "arguments": []})
