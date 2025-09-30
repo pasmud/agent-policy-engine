@@ -35,3 +35,12 @@ class TestToolCall(unittest.TestCase):
     def test_from_dict_rejects_bad_arguments(self):
         with self.assertRaises(ValueError):
             ToolCall.from_dict({"tool": "x", "arguments": []})
+
+
+class TestRule(unittest.TestCase):
+    def test_from_dict_defaults(self):
+        rule = Rule.from_dict({"name": "r1", "effect": "allow"}, 0)
+        self.assertEqual(rule.tools, ("*",))
+        self.assertEqual(rule.agents, ("*",))
+        self.assertEqual(rule.actions, ("*",))
+        self.assertEqual(rule.priority, 0)
