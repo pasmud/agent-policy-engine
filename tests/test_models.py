@@ -44,3 +44,7 @@ class TestRule(unittest.TestCase):
         self.assertEqual(rule.agents, ("*",))
         self.assertEqual(rule.actions, ("*",))
         self.assertEqual(rule.priority, 0)
+
+    def test_from_dict_rejects_bad_effect(self):
+        with self.assertRaises(ValueError):
+            Rule.from_dict({"name": "r1", "effect": "maybe"}, 0)
