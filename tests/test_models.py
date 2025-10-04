@@ -48,3 +48,19 @@ class TestRule(unittest.TestCase):
     def test_from_dict_rejects_bad_effect(self):
         with self.assertRaises(ValueError):
             Rule.from_dict({"name": "r1", "effect": "maybe"}, 0)
+
+    def test_from_dict_normalizes_string_lists(self):
+        rule = Rule.from_dict(
+            {"name": "r1", "effect": "deny", "tools": "shell.exec", "agents": ["a"]},
+            0,
+        )
+        self.assertEqual(rule.tools, ("shell.exec",))
+        self.assertEqual(rule.agents, ("a",))
+
+
+class TestPolicy(unittest.TestCase):
+    def test_from_dict_defaults(self):
+        policy = Policy.from_dict({"rules": []})
+        self.assertEqual(policy.version, "1")
+        self.assertEqual(policy.default_effect, "deny")
+        self.assertEqual(policy.rules, ())
