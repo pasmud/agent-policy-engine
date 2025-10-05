@@ -64,3 +64,27 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(policy.version, "1")
         self.assertEqual(policy.default_effect, "deny")
         self.assertEqual(policy.rules, ())
+
+    def test_round_trip(self):
+        policy = Policy.from_dict(
+            {
+                "version": "2",
+                "default_effect": "allow",
+                "metadata": {"owner": "sec"},
+                "rules": [
+                    {
+                        "name": "deny-shell",
+                        "effect": "deny",
+                        "tools": ["shell.*"],
+                        "priority": 10,
+                        "reason": "no shell",
+                    }
+                ],
+            }
+        )
+        data = policy.to_dict()
+        rebuilt = Policy.from_dict(data)
+        self.assertEqual(rebuilt.version, "2")
+        self.assertEqual(rebuilt.default_effect, "allow")
+        self.assertEqual(rebuilt.rules[0].name, "deny-shell")
+        self.assertEqual(rebuilt.metadata["owner"], "sec")
