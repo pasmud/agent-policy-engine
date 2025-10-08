@@ -88,3 +88,20 @@ class TestPolicy(unittest.TestCase):
         self.assertEqual(rebuilt.default_effect, "allow")
         self.assertEqual(rebuilt.rules[0].name, "deny-shell")
         self.assertEqual(rebuilt.metadata["owner"], "sec")
+
+
+class TestDecision(unittest.TestCase):
+    def test_to_dict(self):
+        call = ToolCall.from_dict({"tool": "t"})
+        decision = Decision(
+            allowed=True,
+            effect="allow",
+            reason="ok",
+            matched_rule="r1",
+            matched_rules=("r1",),
+            call=call,
+        )
+        data = decision.to_dict()
+        self.assertTrue(data["allowed"])
+        self.assertEqual(data["matched_rule"], "r1")
+        self.assertEqual(data["call"]["tool"], "t")
