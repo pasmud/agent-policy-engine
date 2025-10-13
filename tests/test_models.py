@@ -105,3 +105,7 @@ class TestDecision(unittest.TestCase):
         self.assertTrue(data["allowed"])
         self.assertEqual(data["matched_rule"], "r1")
         self.assertEqual(data["call"]["tool"], "t")
+
+
+if __name__ == "__main__":
+    unittest.main()
