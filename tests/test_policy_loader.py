@@ -23,3 +23,21 @@ class TestPolicyLoader(unittest.TestCase):
             policy = load_policy(path)
             self.assertEqual(policy.default_effect, "deny")
             self.assertEqual(len(policy.rules), 1)
+
+    def test_missing_file(self):
+        with self.assertRaises(PolicyLoadError):
+            load_policy("/tmp/does-not-exist-policy.json")
+
+    def test_invalid_json(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "policy.json"
+            path.write_text("{", encoding="utf-8")
+            with self.assertRaises(PolicyLoadError):
+                load_policy(path)
+
+    def test_invalid_schema(self):
+        with tempfile.TemporaryDirectory() as td:
+            path = Path(td) / "policy.json"
+            path.write_text(json.dumps({"rules": [{"name": "r"}]}), encoding="utf-8")
+            with self.assertRaises(PolicyLoadError):
+                load_policy(path)
