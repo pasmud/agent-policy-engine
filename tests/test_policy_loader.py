@@ -41,3 +41,7 @@ class TestPolicyLoader(unittest.TestCase):
             path.write_text(json.dumps({"rules": [{"name": "r"}]}), encoding="utf-8")
             with self.assertRaises(PolicyLoadError):
                 load_policy(path)
+
+
+if __name__ == "__main__":
+    unittest.main()
