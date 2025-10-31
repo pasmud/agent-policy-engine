@@ -20,3 +20,4 @@ PYTHONPATH=src python -m agent_policy_engine check \
 - `shell.exec` is denied by the high-priority `deny-shell` rule.
 - `secrets.read` in `prod` context is denied by `deny-prod-secrets`.
 
+The JSON report format (`--format json`) includes a summary and per-call decision details, including matched rule names and reasons.
