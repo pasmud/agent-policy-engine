@@ -1,0 +1,33 @@
+{
+  "calls": [
+    {
+      "call_id": "c1",
+      "agent": "research-agent",
+      "tool": "web.search",
+      "action": "call",
+      "arguments": {"query": "latest CVE feed"}
+    },
+    {
+      "call_id": "c2",
+      "agent": "support-agent",
+      "tool": "ticket.create",
+      "action": "call",
+      "arguments": {"title": "Customer cannot login", "priority": "medium"}
+    },
+    {
+      "call_id": "c3",
+      "agent": "ops-agent",
+      "tool": "shell.exec",
+      "action": "call",
+      "arguments": {"cmd": "cat /etc/passwd"}
+    },
+    {
+      "call_id": "c4",
+      "agent": "research-agent",
+      "tool": "secrets.read",
+      "action": "call",
+      "arguments": {"name": "db-password"},
+      "context": {"environment": "prod"}
+    }
+  ]
+}
