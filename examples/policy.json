@@ -1,0 +1,44 @@
+{
+  "version": "1",
+  "default_effect": "deny",
+  "metadata": {
+    "name": "example-agent-policy",
+    "owner": "security-labs"
+  },
+  "rules": [
+    {
+      "name": "allow-read-tools",
+      "effect": "allow",
+      "tools": ["filesystem.read", "web.search", "db.query"],
+      "actions": ["call"],
+      "reason": "Low-risk read operations are allowed"
+    },
+    {
+      "name": "allow-support-ticket-create",
+      "effect": "allow",
+      "agents": ["support-agent"],
+      "tools": ["ticket.create"],
+      "when": {
+        "arguments.priority": {"in": ["low", "medium"]}
+      },
+      "reason": "Support agent may create low/medium priority tickets"
+    },
+    {
+      "name": "deny-shell",
+      "effect": "deny",
+      "tools": ["shell.exec", "shell.*"],
+      "reason": "Shell execution is blocked",
+      "priority": 100
+    },
+    {
+      "name": "deny-prod-secrets",
+      "effect": "deny",
+      "tools": ["secrets.read"],
+      "when": {
+        "context.environment": {"eq": "prod"}
+      },
+      "reason": "Production secrets cannot be read by agents",
+      "priority": 90
+    }
+  ]
+}
