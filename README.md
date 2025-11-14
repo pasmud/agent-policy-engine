@@ -12,3 +12,9 @@
 - **CLI and Python API**: evaluate single/batch calls from JSON files.
 - **Deterministic, offline tests**: stdlib-first implementation; optional PyYAML only if you load YAML policies.
 
+## Install
+
+Requires Python 3.10+.
+
+From the repository root:
+
