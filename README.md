@@ -18,3 +18,12 @@ Requires Python 3.10+.
 
 From the repository root:
 
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e .
+# optional for development
+python -m pip install -e ".[dev]"
+```
+
