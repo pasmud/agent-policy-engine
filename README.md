@@ -38,3 +38,15 @@ PYTHONPATH=src python -m agent_policy_engine check \
   --format text
 ```
 
+Example output (shape):
+
+```text
+total=4 allowed=2 denied=2
+1. ALLOW tool=web.search agent=research-agent rule=allow-read-tools reason=Low-risk read operations are allowed
+2. ALLOW tool=ticket.create agent=support-agent rule=allow-support-ticket-create reason=Support agent may create low/medium priority tickets
+3. DENY  tool=shell.exec agent=ops-agent rule=deny-shell reason=Shell execution is blocked
+4. DENY  tool=secrets.read agent=research-agent rule=deny-prod-secrets reason=Production secrets cannot be read by agents
+```
+
+JSON report:
+
