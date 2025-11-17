@@ -27,3 +27,14 @@ python -m pip install -e .
 python -m pip install -e ".[dev]"
 ```
 
+## Quick start
+
+Evaluate the example calls against the example policy:
+
+```bash
+PYTHONPATH=src python -m agent_policy_engine check \
+  --policy examples/policy.json \
+  --input examples/calls.json \
+  --format text
+```
+
