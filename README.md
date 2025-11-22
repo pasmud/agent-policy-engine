@@ -50,3 +50,19 @@ total=4 allowed=2 denied=2
 
 JSON report:
 
+```bash
+PYTHONPATH=src python -m agent_policy_engine check \
+  --policy examples/policy.json \
+  --input examples/calls.json \
+  --format json
+```
+
+Write an audit log (JSONL):
+
+```bash
+PYTHONPATH=src python -m agent_policy_engine check \
+  --policy examples/policy.json \
+  --input examples/calls.json \
+  --audit-out audit.jsonl
+```
+
