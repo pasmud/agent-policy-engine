@@ -66,3 +66,13 @@ PYTHONPATH=src python -m agent_policy_engine check \
   --audit-out audit.jsonl
 ```
 
+Fail the process when any call is denied (useful in CI/policy gates):
+
+```bash
+PYTHONPATH=src python -m agent_policy_engine check \
+  --policy examples/policy.json \
+  --input examples/calls.json \
+  --fail-on-deny
+# exit code 2 when denied calls exist
+```
+
