@@ -76,3 +76,7 @@ PYTHONPATH=src python -m agent_policy_engine check \
 # exit code 2 when denied calls exist
 ```
 
+## Policy format
+
+Policies are JSON documents (YAML is supported only when `PyYAML` is installed). A policy has a default effect and an ordered list of rules.
+
