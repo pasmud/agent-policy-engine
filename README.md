@@ -80,3 +80,44 @@ PYTHONPATH=src python -m agent_policy_engine check \
 
 Policies are JSON documents (YAML is supported only when `PyYAML` is installed). A policy has a default effect and an ordered list of rules.
 
+```json
+{
+  "version": "1",
+  "default_effect": "deny",
+  "metadata": {"owner": "security"},
+  "rules": [
+    {
+      "name": "allow-read-tools",
+      "effect": "allow",
+      "tools": ["filesystem.read", "web.search"],
+      "agents": ["*"],
+      "actions": ["call"],
+      "reason": "Read operations are allowed"
+    },
+    {
+      "name": "deny-prod-secrets",
+      "effect": "deny",
+      "tools": ["secrets.read"],
+      "when": {
+        "context.environment": {"eq": "prod"}
+      },
+      "priority": 90,
+      "reason": "No production secrets"
+    }
+  ]
+}
+```
+
+### Rule fields
+
+| Field | Type | Default | Description |
+|---|---|---:|---|
+| `name` | string | required | Unique human-readable rule identifier. |
+| `effect` | `"allow" \| "deny"` | required | Decision when rule matches. |
+| `tools` | string or list | `["*"]` | `fnmatch` patterns matched against `call.tool`. |
+| `agents` | string or list | `["*"]` | Patterns matched against `call.agent`. |
+| `actions` | string or list | `["*"]` | Patterns matched against `call.action`. |
+| `when` | object | `{}` | Field conditions on call attributes/args/context. |
+| `priority` | int | `0` | Higher wins among matched rules. |
+| `reason` | string | `""` | Explanation included in decision/report. |
+
