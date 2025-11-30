@@ -121,3 +121,9 @@ Policies are JSON documents (YAML is supported only when `PyYAML` is installed).
 | `priority` | int | `0` | Higher wins among matched rules. |
 | `reason` | string | `""` | Explanation included in decision/report. |
 
+### `when` operators
+
+Conditions are keyed by a path such as `arguments.priority`, `context.environment`, `tool`, `agent`, or `action`.
+
+Supported operators:
+
