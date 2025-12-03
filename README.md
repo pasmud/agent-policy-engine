@@ -127,3 +127,13 @@ Conditions are keyed by a path such as `arguments.priority`, `context.environmen
 
 Supported operators:
 
+- `eq`, `neq`
+- `in`, `not_in`
+- `contains`, `startswith`, `endswith`, `regex`
+- `gt`, `gte`, `lt`, `lte`
+- `exists` (boolean)
+
+A scalar value (e.g. `"arguments.env": "prod"`) is treated as `eq`.
+
+## Tool call format
+
