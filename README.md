@@ -152,3 +152,10 @@ Input can be a single object, a list, or `{"calls": [...]}`.
 
 ## CLI reference
 
+```bash
+python -m agent_policy_engine --help
+python -m agent_policy_engine check --help
+```
+
+`check` command:
+
