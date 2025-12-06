@@ -137,3 +137,18 @@ A scalar value (e.g. `"arguments.env": "prod"`) is treated as `eq`.
 
 ## Tool call format
 
+Input can be a single object, a list, or `{"calls": [...]}`.
+
+```json
+{
+  "call_id": "c1",
+  "agent": "support-agent",
+  "tool": "ticket.create",
+  "action": "call",
+  "arguments": {"priority": "medium"},
+  "context": {"environment": "dev"}
+}
+```
+
+## CLI reference
+
