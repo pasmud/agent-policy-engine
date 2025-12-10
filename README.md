@@ -159,3 +159,13 @@ python -m agent_policy_engine check --help
 
 `check` command:
 
+- `--policy PATH` (required): policy JSON file.
+- `--input PATH` (required): tool call JSON file.
+- `--format {json,text}`: report format (default `json`).
+- `--audit-out PATH`: write JSONL audit records.
+- `--fail-on-deny`: exit with code `2` when any decision is denied.
+
+Exit codes: `0` success, `1` input/validation/runtime error, `2` denied calls with `--fail-on-deny`.
+
+## Python API
+
