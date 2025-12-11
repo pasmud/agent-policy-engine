@@ -169,3 +169,16 @@ Exit codes: `0` success, `1` input/validation/runtime error, `2` denied calls wi
 
 ## Python API
 
+```python
+from agent_policy_engine import PolicyEngine, ToolCall, load_policy
+
+policy = load_policy("examples/policy.json")
+engine = PolicyEngine(policy)
+
+decision = engine.check(
+    ToolCall.from_dict({"tool": "shell.exec", "agent": "ops-agent"})
+)
+print(decision.allowed, decision.reason)
+print(engine.audit_log.to_dicts())
+```
+
