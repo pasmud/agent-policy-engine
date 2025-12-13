@@ -182,3 +182,15 @@ print(decision.allowed, decision.reason)
 print(engine.audit_log.to_dicts())
 ```
 
+## Architecture
+
+- `models.py` — dataclasses and validation for `ToolCall`, `Rule`, `Policy`, and `Decision`.
+- `matcher.py` — wildcard matching and `when` condition evaluation.
+- `engine.py` — policy evaluation, priority resolution, default effect handling.
+- `audit.py` — audit record model, in-memory log, JSONL export/import.
+- `policy_loader.py` — JSON loading/validation (optional YAML via PyYAML).
+- `report.py` — JSON/text report rendering.
+- `cli.py` / `__main__.py` — command-line interface.
+
+Evaluation flow:
+
