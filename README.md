@@ -194,3 +194,18 @@ print(engine.audit_log.to_dicts())
 
 Evaluation flow:
 
+1. Load policy and input calls.
+2. For each call, find matching rules.
+3. Select highest-priority match (stable order for ties).
+4. Produce a decision (allow/deny + reason + matched rule).
+5. Append decision to audit log and render report.
+
+## Limitations
+
+- **No remote policy distribution**: policies are loaded from local files.
+- **No authentication/identity provider integration**: agent identity is taken from input.
+- **YAML is optional**: JSON works out of the box; YAML requires installing `PyYAML`.
+- **Pattern matching is `fnmatch`**, not full regex, for tool/agent/action selectors (regex is available inside `when` conditions).
+- **No sandbox/enforcement**: this engine returns decisions; the calling runtime must enforce them.
+- **In-memory audit log**: JSONL export is provided, but no database backend is included.
+
