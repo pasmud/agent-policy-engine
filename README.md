@@ -209,3 +209,7 @@ Evaluation flow:
 - **No sandbox/enforcement**: this engine returns decisions; the calling runtime must enforce them.
 - **In-memory audit log**: JSONL export is provided, but no database backend is included.
 
+## Development
+
+Run tests:
+
