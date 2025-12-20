@@ -213,3 +213,13 @@ Evaluation flow:
 
 Run tests:
 
+```bash
+PYTHONPATH=src python -m unittest discover -v
+```
+
+Or with pytest:
+
+```bash
+python -m pytest -q
+```
+
