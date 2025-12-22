@@ -223,3 +223,14 @@ Or with pytest:
 python -m pytest -q
 ```
 
+Run the demo:
+
+```bash
+PYTHONPATH=src python -m agent_policy_engine check \
+  --policy examples/policy.json \
+  --input examples/calls.json \
+  --format text
+```
+
+## License
+
