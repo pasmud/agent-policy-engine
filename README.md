@@ -234,3 +234,4 @@ PYTHONPATH=src python -m agent_policy_engine check \
 
 ## License
 
+MIT. See [LICENSE](LICENSE).
